@@ -33,7 +33,8 @@ RUN \
       capnproto uuid-dev libsodium-dev valgrind \
       libusb-dev cmake libnewlib-arm-none-eabi libhdf5-serial-dev hdf5-tools smbclient \
       influxdb influxdb-client apt-transport-https adduser dfu-util jq \
-      wget && \
+      wget
+RUN \
       rm -rf /var/lib/apt/lists/*
 
 CMD \
