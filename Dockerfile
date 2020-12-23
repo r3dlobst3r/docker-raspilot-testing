@@ -47,7 +47,7 @@ ENV \
 ENV \
     LC_ALL=en_US.UTF-8
 
-CMD \
+RUN \
 
     useradd -m -G sudo ubuntu -p QmnAakbCwJ8ME && \
 
@@ -57,7 +57,7 @@ CMD \
 
 USER ubuntu
 
-CMD \
+RUN \
 
 cd /home/ubuntu && \
 
