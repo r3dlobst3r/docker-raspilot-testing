@@ -3,9 +3,6 @@ FROM arm64v8/ubuntu:18.04
 #RUN \
 #    [ -z "$(apt-get indextargets)" ]
 
-RUN \
-    mkdir -p /run/systemd && echo 'docker' > /run/systemd/container
-
 CMD \
     ["/bin/bash"]
 
