@@ -18,7 +18,7 @@ RUN \
       ca-certificates \
       openssl \
       gpg-agent \
-      gpgv2 \
+      gpgv2
       
 RUN \
       rm -rf /var/lib/apt/lists/*
