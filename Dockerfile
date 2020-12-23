@@ -6,8 +6,8 @@ FROM arm64v8/ubuntu:18.04
 ENV \
     DEBIAN_FRONTEND=noninteractive
 
-CMD \
-    apt-get update && apt-get install -y --no-install-recommends \
+RUN \
+      /bin/bash apt-get update && apt-get install -y --no-install-recommends \
       apt-utils \
       vim \
       nano \
