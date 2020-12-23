@@ -1,49 +1,64 @@
 FROM arm64v8/ubuntu:18.04
 
-#RUN \
-#    [ -z "$(apt-get indextargets)" ]
+ENV PYTHONUNBUFFERED 1
 
-ENV \
-    DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    autoconf \
+    build-essential \
+    bzip2 \
+    ca-certificates \
+    capnproto \
+    libcapnp-dev \
+    clang \
+    cmake \
+    cppcheck \
+    curl \
+    ffmpeg \
+    git \
+    iputils-ping \
+    libarchive-dev \
+    libbz2-dev \
+    libcurl4-openssl-dev \
+    libeigen3-dev \
+    libffi-dev \
+    libglew-dev \
+    libgles2-mesa-dev \
+    libglib2.0-0 \
+    liblzma-dev \
+    libomp-dev \
+    libopencv-dev \
+    libssl-dev \
+    libsqlite3-dev \
+    libsystemd-dev \
+    libusb-1.0-0-dev \
+    libzmq3-dev \
+    locales \
+    ocl-icd-libopencl1 \
+    ocl-icd-opencl-dev \
+    opencl-headers \
+    python-dev \
+    qt5-default \
+    qtmultimedia5-dev \
+    sudo \
+    valgrind \
+    wget \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN \
-      apt-get update
-      
-CMD \
-      rm -rf /var/lib/apt/lists/*
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
-CMD \
-    sh sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+ENV PATH="/root/.pyenv/bin:/root/.pyenv/shims:${PATH}"
 
-ENV \
-    LANG=en_US.UTF-8
-
-ENV \
-    LANGUAGE=en_US:en
-
-ENV \
-    LC_ALL=en_US.UTF-8
-
-RUN \
-
-    useradd -m -G sudo ubuntu -p QmnAakbCwJ8ME && \
-
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-
-    sudo sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config
-
-USER ubuntu
-
-RUN \
-
-cd /home/ubuntu && \
-
-git clone -b docker https://github.com/r3dlobst3r/raspberry-pilot && \
-
-mv raspberry-pilot raspilot && \
-
-mv /home/ubuntu/raspilot/start_install_tf.sh /home/ubuntu && \
-
-sh /home/ubuntu/start_install_tf.sh
-
-CMD sudo service cron start && sudo service ssh start && /bin/bash
+COPY Pipfile Pipfile.lock /tmp/
+RUN pyenv install 3.8.2 && \
+    pyenv global 3.8.2 && \
+    pyenv rehash && \
+    pip install --no-cache-dir --upgrade pip==20.1.1 && \
+    pip install --no-cache-dir pipenv==2020.8.13 && \
+    cd /tmp && \
+    pipenv install --system --deploy --dev --clear && \
+    pip uninstall -y pipenv
