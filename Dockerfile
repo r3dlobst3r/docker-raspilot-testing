@@ -3,9 +3,6 @@ FROM arm64v8/ubuntu:18.04
 #RUN \
 #    [ -z "$(apt-get indextargets)" ]
 
-CMD \
-    ["/bin/bash"]
-
 ENV \
     DEBIAN_FRONTEND=noninteractive
 
@@ -22,18 +19,7 @@ RUN \
       openssl \
       gpg-agent \
       gpgv2 \
-      software-properties-common \
-      build-essential make python3.7-dev python3-pip libzmq3-dev python3-zmq \
-      openjdk-8-jdk automake zip unzip libtool swig libpng-dev pkg-config \
-      libhdf5-dev clang libarchive-dev \
-      libssl-dev libswscale-dev \
-      libusb-1.0-0 libusb-1.0-0-dev ocl-icd-libopencl1 ocl-icd-opencl-dev \
-      opencl-headers checkinstall \
-      clang-3.8 libatlas-base-dev libopenblas-base libopenblas-dev gfortran \
-      capnproto uuid-dev libsodium-dev valgrind \
-      libusb-dev cmake libnewlib-arm-none-eabi libhdf5-serial-dev hdf5-tools smbclient \
-      influxdb influxdb-client apt-transport-https adduser dfu-util jq \
-      wget
+      
 RUN \
       rm -rf /var/lib/apt/lists/*
 
